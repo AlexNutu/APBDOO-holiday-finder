@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Please log in</title>
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">-->
+    <!--<link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>-->
+    <!---->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="../css/login.css" rel="stylesheet">
+</head>
+<body>
+
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <img src="../images/login.png" id="icon" alt="User Icon" />
+        </div>
+
+        <p th:if="${param.error}" class="text-danger">Wrong user or password</p>
+        <p th:if="${errorMessage}" class="text-danger" th:text="${errorMessage}">Wrong user or password</p>
+
+        <!-- Login Form -->
+        <form method="post" th:action="authUser">
+            <input type="text" id="username" name="username" class="fadeIn second" placeholder="username" required autofocus>
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" required>
+            <br/>
+            <br/>
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+
+        <div id="formFooter">
+            <input type="checkbox" name="remember-me" />
+            Remember Me
+            <a class="btn btn-info" href="/user/signup" style="float: right;">Sign Up</a>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

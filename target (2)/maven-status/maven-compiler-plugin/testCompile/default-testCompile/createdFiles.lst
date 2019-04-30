@@ -1,0 +1,4 @@
+com\holiday\finder\service\CategoryServiceTest.class
+com\holiday\finder\Spring5JpaApplicationTests.class
+com\holiday\finder\repository\CategoryRepositoryTest.class
+com\holiday\finder\repository\PlaceRepositoryTest.class
