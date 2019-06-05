@@ -93,6 +93,11 @@ public class PlaceController {
         model.addAttribute("destinations", destinations);
         model.addAttribute("seasons", seasons);
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); // get logged in username
+
+        model.addAttribute("username", name);
+
         return "view_place";
     }
 

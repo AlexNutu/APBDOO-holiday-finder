@@ -1,0 +1,166 @@
+body {
+    background-image: url("../images/login-bk.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    font-family: 'Roboto', sans-serif;
+}
+.form-control, .form-control:focus, .input-group-addon {
+    border-color: #e1e1e1;
+    border-radius: 0;
+}
+.signup-form {
+    width: 590px;
+    margin: 60px auto;
+    padding: 30px 0;
+}
+.signup-form h2 {
+    color: #636363;
+    margin: 0 0 15px;
+    text-align: center;
+}
+.signup-form .lead {
+    font-size: 14px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.signup-form form {
+    border-radius: 1px;
+    margin-bottom: 15px;
+    background: #fff;
+    border: 1px solid #f3f3f3;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 50px;
+}
+.signup-form .form-group {
+    margin-bottom: 20px;
+}
+.signup-form label {
+    font-weight: normal;
+    font-size: 13px;
+}
+.signup-form .form-control {
+    min-height: 38px;
+    box-shadow: none !important;
+    border-width: 0 0 1px 0;
+}
+.signup-form .input-group-addon {
+    max-width: 42px;
+    text-align: center;
+    background: none;
+    border-width: 0 0 1px 0;
+    padding-left: 5px;
+}
+.signup-form .btn {
+    font-size: 16px;
+    font-weight: bold;
+    /*background: #17a2b8;*/
+    border-radius: 3px;
+    border: none;
+    min-width: 140px;
+    outline: none !important;
+}
+/*.signup-form .btn:hover, .signup-form .btn:focus {*/
+/*!*background: #828282;*!*/
+/*}*/
+.signup-form a {
+    color: #19aa8d;
+    text-decoration: none;
+}
+.signup-form a:hover {
+    text-decoration: underline;
+}
+.signup-form .fa {
+    font-size: 21px;
+}
+.signup-form .fa-paper-plane {
+    font-size: 17px;
+}
+.signup-form .fa-check {
+    color: #fff;
+    left: 9px;
+    top: 18px;
+    font-size: 7px;
+    position: absolute;
+}
+
+/* ANIMATIONS */
+
+/* Simple CSS3 Fade-in-down Animation */
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+/* Simple CSS3 Fade-in Animation */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fadeIn {
+    opacity:0;
+    -webkit-animation:fadeIn ease-in 1;
+    -moz-animation:fadeIn ease-in 1;
+    animation:fadeIn ease-in 1;
+
+    -webkit-animation-fill-mode:forwards;
+    -moz-animation-fill-mode:forwards;
+    animation-fill-mode:forwards;
+
+    -webkit-animation-duration:1s;
+    -moz-animation-duration:1s;
+    animation-duration:1s;
+}
+
+.fadeIn.first {
+    -webkit-animation-delay: 0.4s;
+    -moz-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+}
+
+.fadeIn.second {
+    -webkit-animation-delay: 0.6s;
+    -moz-animation-delay: 0.6s;
+    animation-delay: 0.6s;
+}
+
+.fadeIn.third {
+    -webkit-animation-delay: 0.8s;
+    -moz-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+}
+
+.fadeIn.fourth {
+    -webkit-animation-delay: 1s;
+    -moz-animation-delay: 1s;
+    animation-delay: 1s;
+}

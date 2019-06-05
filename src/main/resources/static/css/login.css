@@ -1,13 +1,13 @@
 
 /* BASIC */
 
-html {
-    background-color: #56baed;
-}
-
 body {
-    font-family: "Poppins", sans-serif;
+    background-image: url("../images/login-bk.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    /*font-family: "Poppins", sans-serif;*/
     height: 100vh;
+    font-family: 'Roboto', sans-serif;
 }
 
 a {
@@ -37,7 +37,7 @@ h2 {
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    min-height: 100%;
+    min-height: 82%;
     padding: 20px;
 }
 
@@ -288,5 +288,5 @@ input[type=password]:placeholder {
 }
 
 #icon {
-    width:60%;
+    width:55%;
 }

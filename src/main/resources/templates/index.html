@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html style="height: 100%" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -76,6 +76,11 @@
             </li>
         </ul>
 
+        <form class="form-inline my-2 my-lg-0" style="margin-right: 10px">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#"
@@ -92,14 +97,10 @@
             </li>
         </ul>
 
-        <!--<form class="form-inline my-2 my-lg-0">-->
-            <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-            <!--<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>-->
-        <!--</form>-->
     </div>
 </nav>
 
-<h1 align="center">Holiday inspiration</h1>
+<h1 align="center" style="margin-top: 10px">Your holiday inspiration</h1>
 
 <div class="container">
     <div class="row">
@@ -153,13 +154,13 @@
 </div>
 
 
-<div class="container">
+<div class="container" style="height: 200px">
     <ul class="pagination justify-content-center" >
         <li class="page-item" th:if="${placePage.number > 0 }">
             <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number})}">Previous</a>
         </li>
         <li class="page-item" th:if="${placePage.number == 0 }">
-            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 1})}">Previous</a>
+            <a class="page-link">Previous</a>
         </li>
         <li class="page-item" th:if="${placePage.totalPages > 0}"
             th:each="pageNumber : ${pageNumbers}"
@@ -173,7 +174,8 @@
             <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 2})}">Next</a>
         </li>
         <li class="page-item" th:if="${placePage.number == placePage.totalPages - 1}">
-            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 1})}">Next</a>
+            <a class="page-link">Next</a><!--th:href="@{/(size=${placePage.size}, page=${placePage.number + 1})}-->
+
         </li>
     </ul>
 </div>
@@ -181,11 +183,10 @@
 <br/>
 
 <!-- Footer -->
-<footer class="py-5 bg-dark">
+<footer class="py-5 bg-dark footer">
     <div class="container">
         <p class="m-0 text-center text-white">Love Holidays &copy; Alexander 2019</p>
     </div>
-    <!-- /.container -->
 </footer>
 
 </body>
