@@ -102,9 +102,18 @@ public class PlaceController {
     }
 
     @PostMapping("/new")
-    public String saveUpdatePlace(@ModelAttribute("newPlace") @Valid Place newPlace, BindingResult result) {
+    public String saveUpdatePlace(Model model, @ModelAttribute("newPlace") @Valid Place newPlace, BindingResult result) {
         if (result.hasErrors()) {
             log.info("Form has errors!");
+
+            List<Category> categories = categoryService.getAll();
+            List<Destination> destinations = destinationService.getAll();
+            List<Season> seasons = seasonService.getAll();
+
+            model.addAttribute("categoriesFilter", categories);
+            model.addAttribute("destinationsFilter", destinations);
+            model.addAttribute("seasonsFilter", seasons);
+
             return "add_place";
         } else {
             log.info("Inserting/Updating new place");

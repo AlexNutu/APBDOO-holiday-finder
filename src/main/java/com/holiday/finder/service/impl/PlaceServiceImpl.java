@@ -52,4 +52,9 @@ public class PlaceServiceImpl implements PlaceService {
     public Page<Place> getPlacesByCategories(Category category, Pageable page) {
         return placeRepository.findByCategoriesIn(category, page);
     }
+
+    @Override
+    public Page<Place> getPlacesByTitleLikeOrDescriptionLike(String s, Pageable page) {
+        return placeRepository.findByTitleLikeOrDescriptionLike(s, s, page);
+    }
 }

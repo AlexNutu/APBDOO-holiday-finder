@@ -24,4 +24,6 @@ public interface PlaceService {
     Page<Place> getPlacesByDestination(Destination destination, Pageable page);
 
     Page<Place> getPlacesByCategories(Category category, Pageable page);
+
+    Page<Place> getPlacesByTitleLikeOrDescriptionLike(String s, Pageable page);
 }

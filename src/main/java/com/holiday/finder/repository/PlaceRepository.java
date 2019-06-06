@@ -39,4 +39,8 @@ public interface PlaceRepository extends PagingAndSortingRepository<Place, Long>
     List<Place> findByTitle(@Param("title") String title);
 
     Page<Place> findByCategoriesIn(Category c, Pageable p);
+
+    Page<Place> findByTitleLikeOrDescriptionLike(String s, String sameString, Pageable page);
+
+
 }

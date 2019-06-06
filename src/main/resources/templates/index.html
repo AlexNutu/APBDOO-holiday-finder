@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="height: 100%" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html style="height: 100%" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -76,8 +76,8 @@
             </li>
         </ul>
 
-        <form class="form-inline my-2 my-lg-0" style="margin-right: 10px">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()" th:action="@{/(page=1)}" method="get" style="margin-right: 10px">
+            <input class="form-control mr-sm-2" name="q" id="q" type="text" required pattern=".*\S+.*" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
 
@@ -91,7 +91,7 @@
                     <i class="fa fa-fw fa-user"></i>
                     <span th:text="${username}"></span>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownSeason">
+                <div class="dropdown-menu" style="min-width: 7rem" aria-labelledby="navbarDropdownSeason">
                     <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </li>
@@ -102,7 +102,14 @@
 
 <h1 align="center" style="margin-top: 10px">Your holiday inspiration</h1>
 
-<div class="container">
+<p th:if="${destinationString} != ''" th:text="'Destination / ' + ${destinationString} " class="appliedFilter"></p>
+<p th:if="${categoryString} != ''" th:text="'Category / ' + ${categoryString} " class="appliedFilter"></p>
+<p th:if="${seasonString} != ''" th:text="'Season / ' + ${seasonString} " class="appliedFilter"></p>
+<p th:if="${searchString} != ''" th:text="'Search: ' + ${searchString} " class="appliedFilter"></p>
+
+<img class="notFound" src="../images/no_result.png" th:if="${placePage.totalPages == 0}">
+
+<div class="container" th:if="${placePage.totalPages > 0}">
     <div class="row">
         <div class="col-lg-12 my-3">
             <div class="pull-right">
@@ -154,7 +161,7 @@
 </div>
 
 
-<div class="container" style="height: 200px">
+<div class="container" style="height: 200px" th:if="${placePage.totalPages > 0}">
     <ul class="pagination justify-content-center" >
         <li class="page-item" th:if="${placePage.number > 0 }">
             <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number})}">Previous</a>

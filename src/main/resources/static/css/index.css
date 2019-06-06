@@ -9,6 +9,23 @@ body{
     left: 0;
 }
 
+.appliedFilter{
+    font-size: 23px;
+    margin-left: 10%;
+    margin-bottom: -1%;
+    font-style: italic;
+}
+
+.notFound{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7px;
+    margin-bottom: 100px;
+    width: 45%;
+    height: 50%
+}
+
 .view-group {
     display: -ms-flexbox;
     display: flex;

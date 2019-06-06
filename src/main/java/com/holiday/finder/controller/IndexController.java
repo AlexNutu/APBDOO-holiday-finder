@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,11 +39,18 @@ public class IndexController {
 
     @RequestMapping("/")
     public String getIndexPage(Model model,
+                               @RequestParam(defaultValue = "") String q,
                                @RequestParam("page") Optional<Integer> page,
                                @RequestParam("size") Optional<Integer> size,
                                @RequestParam("season") Optional<Integer> season,
                                @RequestParam("destination") Optional<Integer> destination,
                                @RequestParam("category") Optional<Integer> category) {
+
+        // Display filters
+        String categoryString = "";
+        String destinationString = "";
+        String seasonString = "";
+        String searchString = "";
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(3);
@@ -50,15 +58,21 @@ public class IndexController {
 
         if (season.isPresent()) {
             Season seasonObj = seasonService.getById(season.get()).get();
-            placePage = placeService.getPlacesBySeason(seasonObj, PageRequest.of(currentPage - 1, pageSize));
+            seasonString = seasonObj.getName();
+            placePage = shrinkDescription(placeService.getPlacesBySeason(seasonObj, PageRequest.of(currentPage - 1, pageSize)));
         } else if (destination.isPresent()) {
             Destination destinationObj = destinationService.getById(destination.get()).get();
-            placePage = placeService.getPlacesByDestination(destinationObj, PageRequest.of(currentPage - 1, pageSize));
+            destinationString = destinationObj.getName();
+            placePage = shrinkDescription(placeService.getPlacesByDestination(destinationObj, PageRequest.of(currentPage - 1, pageSize)));
         } else if (category.isPresent()) {
             Category categoryObj = categoryService.getById(category.get()).get();
-            placePage = placeService.getPlacesByCategories(categoryObj, PageRequest.of(currentPage - 1, pageSize));
+            categoryString = categoryObj.getName();
+            placePage = shrinkDescription(placeService.getPlacesByCategories(categoryObj, PageRequest.of(currentPage - 1, pageSize)));
+        } else if (!q.trim().toLowerCase().equals("")) { // the searched string
+            searchString = q;
+            placePage = shrinkDescription(placeService.getPlacesByTitleLikeOrDescriptionLike("%" + q + "%", PageRequest.of(currentPage - 1, pageSize)));
         } else {
-            placePage = placeService.getAllPlaces(PageRequest.of(currentPage - 1, pageSize));
+            placePage = shrinkDescription(placeService.getAllPlaces(PageRequest.of(currentPage - 1, pageSize)));
         }
 
         model.addAttribute("placePage", placePage);
@@ -82,8 +96,36 @@ public class IndexController {
         String name = auth.getName(); // get logged in username
 
         model.addAttribute("username", name);
+        model.addAttribute("categoryString", categoryString);
+        model.addAttribute("destinationString", destinationString);
+        model.addAttribute("seasonString", seasonString);
+        model.addAttribute("searchString", searchString);
 
         return "index";
+    }
+
+    private Page<Place> shrinkDescription(Page<Place> placePage) {
+        for (Place p : placePage) {
+            String description = p.getDescription();
+            String subString = description;
+            if (description.length() > 239) {
+                if (description.charAt(239) == ' ') {
+                    subString = description.substring(0, 240) + "...";
+                } else if (description.charAt(238) == ' ') {
+                    subString = description.substring(0, 239) + "...";
+                } else if (description.charAt(237) == ' ') {
+                    subString = description.substring(0, 238) + "...";
+                } else if (description.charAt(236) == ' ') {
+                    subString = description.substring(0, 237) + "...";
+                } else if (description.charAt(235) == ' ') {
+                    subString = description.substring(0, 236) + "...";
+                } else {
+                    subString = description.substring(0, 240) + " ...";
+                }
+            }
+            p.setDescription(subString);
+        }
+        return placePage;
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -92,14 +134,19 @@ public class IndexController {
         return "redirect:/";
     }
 
-    @RequestMapping(value="/hello", method = RequestMethod.POST )
+    @RequestMapping(value = "/hello", method = RequestMethod.POST)
     @ResponseBody
-    public String showHelloWord(@RequestParam(required = false) String name){
+    public String showHelloWord(@RequestParam(required = false) String name) {
         return "Hello " + name;
     }
 
     @RequestMapping("/showLogInForm")
-    public String showLoginForm(){
+    public String showLoginForm() {
+        // If the user is authenticated redirect to homepage, else retrieve login page
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.getPrincipal().equals("anonymousUser")) {
+            return "redirect:/";
+        }
         return "login";
     }
 
@@ -109,7 +156,7 @@ public class IndexController {
     }
 
     @GetMapping("/showErrorLogIn")
-    public String showErrorLogIn(Model model){
+    public String showErrorLogIn(Model model) {
         model.addAttribute("errorMessage", "Please try again ... ");
         return "login";
     }

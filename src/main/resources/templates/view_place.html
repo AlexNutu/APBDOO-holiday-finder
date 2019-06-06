@@ -111,10 +111,12 @@
             <h1 class="mt-4" th:text="${place.title}">Post Title</h1>
 
             <!-- Author -->
-            <p class="lead">
+            <p class="lead" style="margin-bottom: 0rem;">
                 <a onclick="return false;" href="" th:text="'$' + ${place.minPrice}"></a> -
                 <a onclick="return false;" href="" th:text="'$' + ${place.maxPrice}"></a>
+                 / pers
             </p>
+            <span>(3 nights)</span>
 
             <hr>
 
