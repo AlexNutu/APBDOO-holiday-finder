@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html style="height: 100%" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Place</title>
@@ -7,6 +7,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="../../css/view_place.css" rel="stylesheet">
 
 </head>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -75,8 +76,8 @@
             </li>
         </ul>
 
-        <form class="form-inline my-2 my-lg-0" style="margin-right: 10px">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()" th:action="@{/(page=1)}" method="get" style="margin-right: 10px">
+            <input class="form-control mr-sm-2" name="q" id="q" type="text" required pattern=".*\S+.*" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
 
@@ -90,7 +91,7 @@
                     <i class="fa fa-fw fa-user"></i>
                     <span th:text="${username}"></span>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownSeason">
+                <div class="dropdown-menu" style="min-width: 7rem" aria-labelledby="navbarDropdownSeason">
                     <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </li>
@@ -132,72 +133,87 @@
 
             <!-- Post Content -->
 
-            <p th:text="${place.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste
+            <p style="margin-bottom: 30px" th:text="${place.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste
                 ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus,
                 voluptatibus.</p>
 
             <hr>
 
-            <!--&lt;!&ndash; Comments Form &ndash;&gt;-->
-            <!--<div class="card my-4">-->
-                <!--<h5 class="card-header">Leave a Comment:</h5>-->
-                <!--<div class="card-body">-->
-                    <!--<form>-->
-                        <!--<div class="form-group">-->
-                            <!--<textarea class="form-control" rows="3"></textarea>-->
+            <div style="margin-bottom: 100px">
+
+                <!-- Comments Form -->
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Single Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">Commenter Name</h5>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
+                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
+                        vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    </div>
+                </div>
+
+                <!-- Single Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">Commenter Name</h5>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
+                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
+                        vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    </div>
+                </div>
+
+                <!--&lt;!&ndash; Comment with nested comments &ndash;&gt;-->
+                <!--<div class="media mb-4">-->
+                    <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
+                    <!--<div class="media-body">-->
+                        <!--<h5 class="mt-0">Commenter Name</h5>-->
+                        <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras-->
+                        <!--purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi-->
+                        <!--vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+
+                        <!--<div class="media mt-4">-->
+                            <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="mt-0">Commenter Name</h5>-->
+                                <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.-->
+                                <!--Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc-->
+                                <!--ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+                            <!--</div>-->
                         <!--</div>-->
-                        <!--<button type="submit" class="btn btn-primary">Submit</button>-->
-                    <!--</form>-->
-                <!--</div>-->
-            <!--</div>-->
 
-            <!--&lt;!&ndash; Single Comment &ndash;&gt;-->
-            <!--<div class="media mb-4">-->
-                <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-                <!--<div class="media-body">-->
-                    <!--<h5 class="mt-0">Commenter Name</h5>-->
-                    <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras-->
-                    <!--purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi-->
-                    <!--vulputate fringilla. Donec lacinia congue felis in faucibus.-->
-                <!--</div>-->
-            <!--</div>-->
-
-            <!--&lt;!&ndash; Comment with nested comments &ndash;&gt;-->
-            <!--<div class="media mb-4">-->
-                <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-                <!--<div class="media-body">-->
-                    <!--<h5 class="mt-0">Commenter Name</h5>-->
-                    <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras-->
-                    <!--purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi-->
-                    <!--vulputate fringilla. Donec lacinia congue felis in faucibus.-->
-
-                    <!--<div class="media mt-4">-->
-                        <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-                        <!--<div class="media-body">-->
-                            <!--<h5 class="mt-0">Commenter Name</h5>-->
-                            <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.-->
-                            <!--Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc-->
-                            <!--ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+                        <!--<div class="media mt-4">-->
+                            <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="mt-0">Commenter Name</h5>-->
+                                <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.-->
+                                <!--Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc-->
+                                <!--ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+                            <!--</div>-->
                         <!--</div>-->
+
                     <!--</div>-->
-
-                    <!--<div class="media mt-4">-->
-                        <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-                        <!--<div class="media-body">-->
-                            <!--<h5 class="mt-0">Commenter Name</h5>-->
-                            <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.-->
-                            <!--Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc-->
-                            <!--ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
-                        <!--</div>-->
-                    <!--</div>-->
-
                 <!--</div>-->
-            <!--</div>-->
 
+            </div>
         </div>
 
+
         <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
+        <div class="col-md-4" style="margin-bottom: 60px;">
 
             <!-- Categories Widget -->
             <div class="card my-4">
@@ -245,9 +261,9 @@
 <br/>
 
 <!-- Footer -->
-<footer class="py-5 bg-dark">
+<footer class="py-5 bg-dark footer">
     <div class="container">
-        <p class="m-0 text-center text-white">Love Holidays &copy; Alexander 2019</p>
+        <p class="m-0 text-center text-white">Love Holidays &copy; Website 2019</p>
     </div>
     <!-- /.container -->
 </footer>
