@@ -1,13 +1,7 @@
 package com.holiday.finder.controller;
 
-import com.holiday.finder.model.Category;
-import com.holiday.finder.model.Destination;
-import com.holiday.finder.model.Place;
-import com.holiday.finder.model.Season;
-import com.holiday.finder.service.CategoryService;
-import com.holiday.finder.service.DestinationService;
-import com.holiday.finder.service.PlaceService;
-import com.holiday.finder.service.SeasonService;
+import com.holiday.finder.model.*;
+import com.holiday.finder.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.File;
@@ -41,6 +32,12 @@ public class PlaceController {
     @Autowired
     PlaceService placeService;
 
+    @Autowired
+    CommentService commentService;
+
+    @Autowired
+    UserService userService;
+
     @RequestMapping("/add")
     public String addPlace(Model model) {
 
@@ -52,6 +49,10 @@ public class PlaceController {
         model.addAttribute("categoriesFilter", categories);
         model.addAttribute("destinationsFilter", destinations);
         model.addAttribute("seasonsFilter", seasons);
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("destinations", destinations);
+        model.addAttribute("seasons", seasons);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); // get logged in username
@@ -73,6 +74,16 @@ public class PlaceController {
         model.addAttribute("categoriesFilter", categories);
         model.addAttribute("destinationsFilter", destinations);
         model.addAttribute("seasonsFilter", seasons);
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("destinations", destinations);
+        model.addAttribute("seasons", seasons);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); // get logged in username
+
+        model.addAttribute("username", name);
+
         return "add_place";
     }
 
@@ -80,6 +91,7 @@ public class PlaceController {
     public String seePlace(@PathVariable Long placeId, Model model) {
         Place place = placeService.getById(placeId);
         model.addAttribute("place", place);
+        model.addAttribute("longPlaceId", place.getId());
         model.addAttribute("pcategory", place.getCategories().iterator().next().getName());
         model.addAttribute("pseason", place.getSeason().getName());
         model.addAttribute("pdestination", place.getDestination().getName());
@@ -98,6 +110,9 @@ public class PlaceController {
 
         model.addAttribute("username", name);
 
+        Comment newComment = new Comment();
+        model.addAttribute("newComment", newComment);
+
         return "view_place";
     }
 
@@ -114,12 +129,38 @@ public class PlaceController {
             model.addAttribute("destinationsFilter", destinations);
             model.addAttribute("seasonsFilter", seasons);
 
+            model.addAttribute("categories", categories);
+            model.addAttribute("destinations", destinations);
+            model.addAttribute("seasons", seasons);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName(); // get logged in username
+
+            model.addAttribute("username", name);
+
             return "add_place";
         } else {
             log.info("Inserting/Updating new place");
             placeService.savePlace(newPlace);
             return "redirect:/";
         }
+    }
+
+    @PostMapping("/postComment/")
+    public String postComment(Model model, @ModelAttribute("newComment") Comment newComment, @RequestParam("longPlaceId") Long longPlaceId, BindingResult result) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Place place = placeService.getById(longPlaceId);
+        newComment.setPlace(place);
+
+        User currentUser = userService.getByUsername(auth.getName());
+        newComment.setUser(currentUser);
+
+        commentService.saveComment(newComment);
+
+        return "redirect:/place/see/" + longPlaceId;
+
     }
 
 }

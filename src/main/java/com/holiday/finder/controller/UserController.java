@@ -6,6 +6,8 @@ import com.holiday.finder.service.AuthorityService;
 import com.holiday.finder.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,13 @@ public class UserController {
 
     @GetMapping("/signup")
     public String showSignUp(Model model) {
+
+        // If the user is authenticated redirect to homepage, else retrieve login page
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.getPrincipal().equals("anonymousUser")) {
+            return "redirect:/";
+        }
+
         model.addAttribute("newUser", new User());
         return "sign_up";
     }
@@ -52,7 +61,7 @@ public class UserController {
 
             Authority newAuthority = new Authority();
             newAuthority.setUsername(newUser.getUsername());
-            newAuthority.setAuthority("ADMIN");
+            newAuthority.setAuthority("USER");
             authorityService.saveAuthority(newAuthority);
 
             try {

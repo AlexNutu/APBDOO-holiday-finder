@@ -50,9 +50,13 @@ INSERT INTO place_category(place_id, category_id) VALUES (11, 1);
 INSERT INTO place_category(place_id, category_id) VALUES (12, 1);
 INSERT INTO place_category(place_id, category_id) VALUES (13, 2);
 
-INSERT INTO users(username, password, enabled, email) VALUES('userHello', '$2a$10$/YvXuJlS3PfHKUts3YKWHO/XsXduM2iEbLDInKbMohgVgs/Fs7H9G', 1, 'test@mail.com');
+INSERT INTO comment (description, place_id, user_id) VALUES ('You should visit that place! Its awesome', 1, 1);
+
+INSERT INTO users(username, password, enabled, email) VALUES('user', '$2a$10$5CCOD3aH.1zC.FXUs7shFOJU.iQ09qk8KOXFIZrETyr.4zbSz4FrW', 1, 'test@mail.com');
 INSERT INTO users(username, password, enabled, email) VALUES('admin', '$2a$10$8KgbuwYGA3a00mkemz0krOI5hd3d.Gh83rrj3E2Bcqgv6I816CB8u', 1, 'some@mail.com');
 
-INSERT INTO authorities(username, authority) VALUES('userHello', 'HELLO');
-INSERT INTO authorities(username, authority) VALUES('admin', 'HELLO');
+INSERT INTO authorities(username, authority) VALUES('user', 'USER');
+INSERT INTO authorities(username, authority) VALUES('admin', 'USER');
 INSERT INTO authorities(username, authority) VALUES('admin', 'ADMIN');
+
+

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +52,9 @@ public class IndexController {
         String destinationString = "";
         String seasonString = "";
         String searchString = "";
+        Long seassonId = 0L;
+        Long categoryId = 0L;
+        Long destinationId = 0L;
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(3);
@@ -59,13 +63,16 @@ public class IndexController {
         if (season.isPresent()) {
             Season seasonObj = seasonService.getById(season.get()).get();
             seasonString = seasonObj.getName();
+            seassonId = seasonObj.getId();
             placePage = shrinkDescription(placeService.getPlacesBySeason(seasonObj, PageRequest.of(currentPage - 1, pageSize)));
         } else if (destination.isPresent()) {
             Destination destinationObj = destinationService.getById(destination.get()).get();
             destinationString = destinationObj.getName();
+            destinationId = destinationObj.getId();
             placePage = shrinkDescription(placeService.getPlacesByDestination(destinationObj, PageRequest.of(currentPage - 1, pageSize)));
         } else if (category.isPresent()) {
             Category categoryObj = categoryService.getById(category.get()).get();
+            categoryId = categoryObj.getId();
             categoryString = categoryObj.getName();
             placePage = shrinkDescription(placeService.getPlacesByCategories(categoryObj, PageRequest.of(currentPage - 1, pageSize)));
         } else if (!q.trim().toLowerCase().equals("")) { // the searched string
@@ -94,12 +101,23 @@ public class IndexController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); // get logged in username
+        String isAdmin = "no";
+        for (GrantedAuthority authority : auth.getAuthorities()) {
+            if (authority.getAuthority().equals("ADMIN")) {
+                isAdmin = "yes";
+            }
+        }
+        model.addAttribute("isAdmin", isAdmin);
 
         model.addAttribute("username", name);
         model.addAttribute("categoryString", categoryString);
         model.addAttribute("destinationString", destinationString);
         model.addAttribute("seasonString", seasonString);
         model.addAttribute("searchString", searchString);
+
+        model.addAttribute("seassonId", seassonId);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("destinationId", destinationId);
 
         return "index";
     }

@@ -120,7 +120,7 @@
                     <button class="btn btn-danger" id="grid">
                         Grid View
                     </button>
-                    <a class='btn btn-success' href="/place/add">
+                    <a th:if="${isAdmin} == 'yes'" class='btn btn-success' href="/place/add">
                         Add <i class="fa fa-plus"></i>
                     </a>
                 </div>
@@ -150,7 +150,7 @@
                         <div class="col-lg-12 my-3">
                             <div class="btn-group">
                                 <a class="btn btn-success" th:href="@{'/place/see/' + ${place.id}}">See more</a>
-                                <a class="btn btn-primary" th:href="@{'/place/edit/' + ${place.id}}">Edit</a>
+                                <a th:if="${isAdmin} == 'yes'" class="btn btn-primary" th:href="@{'/place/edit/' + ${place.id}}">Edit</a>
                             </div>
                         </div>
                     </div>
@@ -163,13 +163,29 @@
 
 <div class="container" style="height: 200px" th:if="${placePage.totalPages > 0}">
     <ul class="pagination justify-content-center" >
-        <li class="page-item" th:if="${placePage.number > 0 }">
+
+
+        <li class="page-item" th:if="${placePage.number > 0 } and ${categoryString} == '' and ${seasonString} == '' and ${destinationString} == '' and ${searchString} == ''">
             <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number})}">Previous</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number > 0 } and ${categoryString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number}, category=${categoryId})}">Previous</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number > 0 } and ${seasonString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number}, season=${seassonId})}">Previous</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number > 0 } and ${destinationString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number}, destination=${destinationId})}">Previous</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number > 0 } and ${searchString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number}, q=${searchString})}">Previous</a>
         </li>
         <li class="page-item" th:if="${placePage.number == 0 }">
             <a class="page-link">Previous</a>
         </li>
-        <li class="page-item" th:if="${placePage.totalPages > 0}"
+
+
+        <li class="page-item" th:if="${placePage.totalPages > 0} and ${categoryString} == '' and ${seasonString} == '' and ${destinationString} == '' and ${searchString} == ''"
             th:each="pageNumber : ${pageNumbers}"
             th:classappend="${pageNumber==placePage.number + 1} ? active">
             <a class="page-link"
@@ -177,13 +193,61 @@
                th:text="${pageNumber}">
             </a>
         </li>
-        <li class="page-item" th:if="${placePage.number < placePage.totalPages - 1}">
+        <li class="page-item" th:if="${placePage.totalPages > 0} and ${categoryString} != ''"
+            th:each="pageNumber : ${pageNumbers}"
+            th:classappend="${pageNumber==placePage.number + 1} ? active">
+            <a class="page-link"
+               th:href="@{/(size=${placePage.size}, page=${pageNumber}, category=${categoryId})}"
+               th:text="${pageNumber}">
+            </a>
+        </li>
+        <li class="page-item" th:if="${placePage.totalPages > 0} and ${seasonString} != ''"
+            th:each="pageNumber : ${pageNumbers}"
+            th:classappend="${pageNumber==placePage.number + 1} ? active">
+            <a class="page-link"
+               th:href="@{/(size=${placePage.size}, page=${pageNumber}, season=${seassonId})}"
+               th:text="${pageNumber}">
+            </a>
+        </li>
+        <li class="page-item" th:if="${placePage.totalPages > 0} and ${destinationString} != ''"
+            th:each="pageNumber : ${pageNumbers}"
+            th:classappend="${pageNumber==placePage.number + 1} ? active">
+            <a class="page-link"
+               th:href="@{/(size=${placePage.size}, page=${pageNumber}, destination=${destinationId})}"
+               th:text="${pageNumber}">
+            </a>
+        </li>
+        <li class="page-item" th:if="${placePage.totalPages > 0} and ${searchString} != ''"
+            th:each="pageNumber : ${pageNumbers}"
+            th:classappend="${pageNumber==placePage.number + 1} ? active">
+            <a class="page-link"
+               th:href="@{/(size=${placePage.size}, page=${pageNumber}, q=${searchString})}"
+               th:text="${pageNumber}">
+            </a>
+        </li>
+
+        <li class="page-item" th:if="${placePage.number < placePage.totalPages - 1} and ${categoryString} == '' and ${seasonString} == '' and ${destinationString} == '' and ${searchString} == ''">
             <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 2})}">Next</a>
         </li>
+
+        <li class="page-item" th:if="${placePage.number < placePage.totalPages - 1} and ${categoryString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 2}, category=${categoryId})}">Next</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number < placePage.totalPages - 1} and ${seasonString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 2}, season=${seassonId})}">Next</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number < placePage.totalPages - 1} and ${destinationString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 2}, destination=${destinationId})}">Next</a>
+        </li>
+        <li class="page-item" th:if="${placePage.number < placePage.totalPages - 1} and ${searchString} != ''">
+            <a class="page-link" th:href="@{/(size=${placePage.size}, page=${placePage.number + 2}, q=${searchString})}">Next</a>
+        </li>
+
         <li class="page-item" th:if="${placePage.number == placePage.totalPages - 1}">
             <a class="page-link">Next</a><!--th:href="@{/(size=${placePage.size}, page=${placePage.number + 1})}-->
-
         </li>
+
+
     </ul>
 </div>
 
